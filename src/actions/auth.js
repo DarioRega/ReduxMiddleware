@@ -18,6 +18,18 @@ export const startLogin = type => {
   }
 }
 
+
+export const register = uid => ({
+  type: 'REGISTER',
+  uid
+})
+
+export const startRegister = user => {
+  return () => {
+    return firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+  }
+}
+
 export const logout = () => ({
   type: 'LOGOUT'
 })

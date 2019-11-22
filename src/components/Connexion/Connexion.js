@@ -1,5 +1,9 @@
 import React, { Fragment, useState } from 'react'
 import { withFormik, Field, Form } from 'formik'
+import { connect } from 'react-redux'
+
+
+import { startLogin, startRegister } from '../../actions/auth'
 // import validator from 'validator'
 
 const Connexion = ({ handleChange, values }) => {
@@ -71,28 +75,6 @@ const Connexion = ({ handleChange, values }) => {
   )
 }
 
-
-
-
-
-      
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const ConnexionFormik = withFormik({
   mapPropsToValues ({ email, password, lastName, firstName, dateOfBirth, country }) {
     return {
@@ -105,8 +87,23 @@ const ConnexionFormik = withFormik({
     }
   },
   handleSubmit (values) {
+    if (values.userName) {
+      const type = {
+        login: 'emailAndPassword',
+        ...values
+      }
+      startLogin(type)
+    } else {
+      startRegister(values)
+    }
     console.log('values : ', values)
   }
 })(Connexion) 
 
-export default ConnexionFormik
+const mapDispatchToProps = dispatch => ({
+  startLogin: (type) => dispatch(startLogin(type)),
+  startRegister: (email, password) => dispatch(startRegister(email, password))
+})
+
+
+export default connect(undefined, mapDispatchToProps)(ConnexionFormik)
