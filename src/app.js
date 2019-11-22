@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import bootstrap from 'bootstrap/dist/css/bootstrap.css'
 import { Provider } from 'react-redux'
 import { firebase } from './firebase/firebase'
 import AppRouter, { history } from './router/AppRouter'
@@ -23,7 +24,8 @@ const renderApp = () => {
   }
 }
 
-ReactDOM.render(<p>Loading....</p>, document.getElementById('app'))
+// ReactDOM.render(<p>Loading....</p>, document.getElementById('app'))
+ReactDOM.render(provideToComps, document.getElementById('app'))
 
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {

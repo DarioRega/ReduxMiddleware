@@ -1,5 +1,4 @@
-import database from '../firebase/firebase' 
-
+import database from '../firebase/firebase'
 
 export const editUserData = (updates) => ({
   type: 'EDIT_USER_DATA',
@@ -15,8 +14,7 @@ export const startEditUserData = updates => {
   }
 }
 
-
-export const removeUserData  = () => ({
+export const removeUserData = () => ({
   type: 'REMOVE_USER_DATA'
 })
 
@@ -28,7 +26,6 @@ export const startRemoveUserData = () => {
     })
   }
 }
-
 
 export const setUserData = data => ({
   type: 'SET_USER_DATA',

@@ -9,7 +9,7 @@ export default (state = {}, action) => {
       return { ...action.updates }
     case 'REMOVE_USER_DATA':
       return {}
-
     default:
       return state
+  }
 }
