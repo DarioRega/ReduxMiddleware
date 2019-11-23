@@ -93,23 +93,19 @@ const ConnexionFormik = withFormik({
   },
   handleSubmit (values, { props }) {
     if (values.username) {
-      const type = {
-        login: 'emailAndPassword',
-        ...values
-      }
-      console.log('register')
-      props.startRegister(type)
+      props.startRegister(values)
     } else {
       console.log('login')
-      props.startLogin(values)
+      const type = 'emailAndPassword'
+      props.startLogin(values, type)
     }
     console.log('values : ', values)
   },
 })(Connexion) 
 
 const mapDispatchToProps = dispatch => ({
-  startLogin: (values) => dispatch(startLogin(values)),
-  startRegister: (type) => dispatch(startRegister(type)),
+  startLogin: (values, type) => dispatch(startLogin(values, type)),
+  startRegister: (values) => dispatch(startRegister(values)),
   startLogout: () => dispatch(startLogout())
 })
 

@@ -39,10 +39,8 @@ export const startSetUserData = uid => {
     return database.ref(`users/${uid}`).once('value').then((snapshot) => {
       let userData = {}
       snapshot.forEach(childSnapshot => {
-        console.log('child snapshot val : ', childSnapshot.val())
         userData = childSnapshot.val()
       })
-      console.log('inside database ref :value', userData)
       dispatch(setUserData(userData))
     })
   }
@@ -55,7 +53,6 @@ export const registerUserData = data => ({
 
 export const startRegisterUserData = (data, uid) => {
   return (dispatch) => {
-    console.log('data : ', data)
     return database.ref(`users/${uid}/`).push(data).then(() => dispatch(registerUserData(data)))
   }
 }

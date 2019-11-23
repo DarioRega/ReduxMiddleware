@@ -1,25 +1,33 @@
 import { firebase, googleAuthProvider } from '../firebase/firebase'
 import { startSetUserData, startRegisterUserData } from './userData'
+import { history } from '../router/AppRouter'
 
 export const login = userId => ({
   type: 'LOGIN',
   uid: userId
 })
 
-export const startLogin = type => {
+export const startLogin = (values, type) => {
   return (dispatch) => {
-    return firebase.auth().signInWithEmailAndPassword(type.email, type.password).then((userData) => {
-      console.log('user id : ', userData.user.uid)
-      dispatch(startSetUserData(userData.user.uid)).then(() => {
-        dispatch(login(userData.user.uid))
+    if (type === 'emailAndPassword') {
+      return firebase.auth().signInWithEmailAndPassword(values.email, values.password).then((userData) => {
+        console.log('user id : ', userData.user.uid)
+        dispatch(startSetUserData(userData.user.uid)).then(() => {
+          dispatch(login(userData.user.uid))
+          dispatch(setMemberStatus({ isAlreadyMember: true }))
+          history.push('/welcome')
+        })
       })
-    })
+    } else {
+      return firebase.auth().signInWithPopup(googleAuthProvider).then((userData) => {
+        dispatch(startSetUserData(userData.user.uid)).then(() => {
+          dispatch(login(userData.user.uid))
+          dispatch(setMemberStatus({ isAlreadyMember: true }))
+          history.push('/welcome')
+        })
+      })
+    }
   }
-  // if (type.login === 'google') {
-  //   return () => {
-  //     return firebase.auth().signInWithPopup(googleAuthProvider)
-  //   }
-  // }
 }
 
 // export const register = user => ({
@@ -30,10 +38,11 @@ export const startLogin = type => {
 export const startRegister = user => {
   return (dispatch) => {
     return firebase.auth().createUserWithEmailAndPassword(user.email, user.password).then((creds) => {
-      user.type = null
       console.log('data in startReigster', creds)
-      dispatch(startRegisterUserData(user, creds.user.uid )).then(() => {
+      dispatch(startRegisterUserData(user, creds.user.uid)).then(() => {
         dispatch(login(creds.user.uid))
+        dispatch(setMemberStatus({ isAlreadyMember: false }))
+        history.push('/welcome')
       })
     })
   }
@@ -49,3 +58,9 @@ export const startLogout = () => {
     return firebase.auth().signOut()
   }
 }
+
+
+export const setMemberStatus = isAlreadyMember => ({
+  type: 'SET_MEMBER_STATUS',
+  isAlreadyMember
+})

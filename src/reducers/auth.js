@@ -11,7 +11,10 @@ export default (state = {}, action) => {
       return {
         uid: action.uid
       }
-      
+    case 'SET_MEMBER_STATUS':
+      return { ...state, ...action.isAlreadyMember }
+    case 'ADD_USER_REF':
+      return { ...state, ...action.ref }
     default:
       return state
   }

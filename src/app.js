@@ -9,7 +9,6 @@ import { startSetUserData } from './actions/userData'
 import { login, logout, startLogout } from './actions/auth'
 
 const store = configureStore()
-
 const provideToComps = (
   <Provider store={store}>
     <AppRouter />
