@@ -9,8 +9,8 @@ export const login = userId => ({
 export const startLogin = type => {
   return (dispatch) => {
     return firebase.auth().signInWithEmailAndPassword(type.email, type.password).then((userData) => {
-      console.log('user id : ', userData.user.id)
-      dispatch(startSetUserData(userData.user.id)).then(() => {
+      console.log('user id : ', userData.user.uid)
+      dispatch(startSetUserData(userData.user.uid)).then(() => {
         dispatch(login(userData.user.uid))
       })
     })
@@ -29,13 +29,12 @@ export const startLogin = type => {
 
 export const startRegister = user => {
   return (dispatch) => {
-    return firebase.auth().createUserWithEmailAndPassword(user.email, user.password).then((data) => {
-      console.log('data in startReigster', data)
-      const userData = {
-        uid: data.user.uid,
-        ...user
-      }
-      dispatch(startRegisterUserData(userData))
+    return firebase.auth().createUserWithEmailAndPassword(user.email, user.password).then((creds) => {
+      user.type = null
+      console.log('data in startReigster', creds)
+      dispatch(startRegisterUserData(user, creds.user.uid )).then(() => {
+        dispatch(login(creds.user.uid))
+      })
     })
   }
 }

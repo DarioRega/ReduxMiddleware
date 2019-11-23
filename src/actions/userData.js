@@ -21,7 +21,7 @@ export const removeUserData = () => ({
 export const startRemoveUserData = () => {
   return (dispatch, getState) => {
     const uid = getState().uid
-    return database.ref(`users/${uid}`).set({}).then(() => {
+    return database.ref(`${uid}`).set({}).then(() => {
       dispatch(removeUserData())
     })
   }
@@ -29,18 +29,22 @@ export const startRemoveUserData = () => {
 
 export const setUserData = data => ({
   type: 'SET_USER_DATA',
-  data
+  userData: data
 })
 
 // Middleware
 export const startSetUserData = uid => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     console.log('in startSetUserData')
-     return database.ref(`users/${uid}`).once('value').then((snapshot) => {
-        console.log('inside database ref :value', snapshot.val())
-        dispatch(setUserData(snapshot.val()))
+    return database.ref(`users/${uid}`).once('value').then((snapshot) => {
+      let userData = {}
+      snapshot.forEach(childSnapshot => {
+        console.log('child snapshot val : ', childSnapshot.val())
+        userData = childSnapshot.val()
       })
-
+      console.log('inside database ref :value', userData)
+      dispatch(setUserData(userData))
+    })
   }
 }
 
@@ -49,9 +53,9 @@ export const registerUserData = data => ({
   data
 })
 
-export const startRegisterUserData = data => {
+export const startRegisterUserData = (data, uid) => {
   return (dispatch) => {
     console.log('data : ', data)
-    return database.ref('users').push({ data }).then(() => dispatch(registerUserData(data)))
+    return database.ref(`users/${uid}/`).push(data).then(() => dispatch(registerUserData(data)))
   }
 }
