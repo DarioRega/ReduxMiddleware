@@ -32,9 +32,11 @@ const Connexion = ({ handleChange, values, handleSubmit, startLogout }) => {
             </div>
             <div className='form-row'>
               <div className='col-6 m-auto '>
+                <label htmlFor="">Email</label>
                 <Field type='email' name='email' placeholder='Email' className='form-control' />
               </div>
               <div className='col-6 m-auto'>
+                <label htmlFor="">Password</label>
                 <Field type='password' name='password' placeholder='Password' className='form-control' />
               </div>
             </div>
@@ -42,25 +44,31 @@ const Connexion = ({ handleChange, values, handleSubmit, startLogout }) => {
             <Fragment> 
             <div className='form-row pt-4'>
               <div className='col-6 m-auto'>
+                <label htmlFor="">First name</label>
                 <Field type='text' name='firstName' placeholder='First name' className='form-control' />
               </div>
               <div className='col-6 m-auto'>
+              <label htmlFor="">Last name</label>
                 <Field type='text' name='lastName' placeholder='Last name' className='form-control' />
               </div>
             </div>
             <div className='form-row pt-4'>
               <div className='col-6 m-auto '>
+                <label htmlFor="">Username</label>
                 <Field type='text' name='username' placeholder='Username' className='form-control' />
               </div>
               <div className='col-6 m-auto'>
+                <label htmlFor="">Date of birth</label>
                 <Field type='date' name='dateOfBirth' placeholder='Date of birth' className='form-control' />
               </div>
             </div>
             <div className='form-row pt-4'>
               <div className='col-6 m-auto '>
+                <label htmlFor="">City</label>
                 <Field type='text' name='city' placeholder='City' className='form-control' />
               </div>
               <div className='col-6 m-auto'>
+                <label htmlFor="">Country</label>
                 <Field type='text' name='country' placeholder='Country' className='form-control' />
               </div>
             </div>

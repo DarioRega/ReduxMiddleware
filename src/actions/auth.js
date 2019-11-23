@@ -11,6 +11,7 @@ export const startLogin = (values, type) => {
   return (dispatch) => {
     if (type === 'emailAndPassword') {
       return firebase.auth().signInWithEmailAndPassword(values.email, values.password).then((userData) => {
+        console.log(userData)
         console.log('user id : ', userData.user.uid)
         dispatch(startSetUserData(userData.user.uid)).then(() => {
           dispatch(login(userData.user.uid))
