@@ -9,6 +9,8 @@ export default (state = {}, action) => {
       return { ...action.updates }
     case 'REMOVE_USER_DATA':
       return {}
+    case 'ADD_NEW_USER_DATA':
+      return { ...action.data }
     default:
       return state
   }

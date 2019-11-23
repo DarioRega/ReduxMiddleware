@@ -2,11 +2,10 @@ import React, { Fragment, useState } from 'react'
 import { withFormik, Field, Form } from 'formik'
 import { connect } from 'react-redux'
 
-
-import { startLogin, startRegister } from '../../actions/auth'
+import { startLogin, startRegister, startLogout } from '../../actions/auth'
 // import validator from 'validator'
 
-const Connexion = ({ handleChange, values }) => {
+const Connexion = ({ handleChange, values, handleSubmit, startLogout }) => {
   const [isAlreadyMember, setIsAlreadyMember] = useState(true)
   const [alertUser, setAlertUser] = useState('')
   // checkInput = input => {
@@ -17,6 +16,7 @@ const Connexion = ({ handleChange, values }) => {
     <div className='container pt-5 mt-5'>
       <div className='row'>
         <div className="col-5 m-auto">
+          <button onClick={startLogout}>Logout</button>
           {alertUser ?
             <div className='col-lg-6 col-10 col-md-6 m-auto pt-5 mt-5'>
               <div className='my-5'>
@@ -65,10 +65,12 @@ const Connexion = ({ handleChange, values }) => {
               </div>
             </div>
             </Fragment> }
-            <div className='text-center pt-5'>
-              <button className='btn-dark btn my-4 text-center' onClick={() => setIsAlreadyMember(!isAlreadyMember)}>{isAlreadyMember ? 'Login' : 'Register'}</button>
-            </div>
           </Form>
+            <div className='text-center pt-5'>
+              <button className='btn-dark btn my-4 text-center mr-4' onClick={e => handleSubmit(e)}>{isAlreadyMember ? 'Login' : 'Register'}</button>
+              <button className='btn-primary btn my-4 text-center ml-4' onClick={() => setIsAlreadyMember(!isAlreadyMember)}>{isAlreadyMember ? 'Register instead' : 'Login instead'}</button>
+
+            </div>
         </div>
       </div>
     </div>
@@ -76,33 +78,39 @@ const Connexion = ({ handleChange, values }) => {
 }
 
 const ConnexionFormik = withFormik({
-  mapPropsToValues ({ email, password, lastName, firstName, dateOfBirth, country }) {
+  mapPropsToValues ({ email, password, lastName, firstName, dateOfBirth, country, username, city, startRegister, startLogin }) {
     return {
       email: email || '',
       password: password || '',
       lastName: lastName || '',
       firstName: firstName || '',
-      dateOfBirth: dateOfBirth || null,
-      country: country || ''
+      username: username || '',
+      dateOfBirth: dateOfBirth || '',
+      country: country || '',
+      city: city || ''
+
     }
   },
-  handleSubmit (values) {
-    if (values.userName) {
+  handleSubmit (values, { props }) {
+    if (values.username) {
       const type = {
         login: 'emailAndPassword',
         ...values
       }
-      startLogin(type)
+      console.log('register')
+      props.startRegister(type)
     } else {
-      startRegister(values)
+      console.log('login')
+      props.startLogin(values)
     }
     console.log('values : ', values)
-  }
+  },
 })(Connexion) 
 
 const mapDispatchToProps = dispatch => ({
-  startLogin: (type) => dispatch(startLogin(type)),
-  startRegister: (email, password) => dispatch(startRegister(email, password))
+  startLogin: (values) => dispatch(startLogin(values)),
+  startRegister: (type) => dispatch(startRegister(type)),
+  startLogout: () => dispatch(startLogout())
 })
 
 

@@ -33,11 +33,25 @@ export const setUserData = data => ({
 })
 
 // Middleware
-export const startSetUserData = () => {
+export const startSetUserData = uid => {
   return (dispatch, getState) => {
-    const uid = getState().uid
-    database.ref(`users/${uid}`).once('value').then((snapshot) => {
-      dispatch(setUserData(snapshot.val()))
-    })
+    console.log('in startSetUserData')
+     return database.ref(`users/${uid}`).once('value').then((snapshot) => {
+        console.log('inside database ref :value', snapshot.val())
+        dispatch(setUserData(snapshot.val()))
+      })
+
+  }
+}
+
+export const registerUserData = data => ({
+  type: 'ADD_NEW_USER_DATA',
+  data
+})
+
+export const startRegisterUserData = data => {
+  return (dispatch) => {
+    console.log('data : ', data)
+    return database.ref('users').push({ data }).then(() => dispatch(registerUserData(data)))
   }
 }

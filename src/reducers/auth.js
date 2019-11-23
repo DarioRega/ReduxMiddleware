@@ -7,6 +7,11 @@ export default (state = {}, action) => {
       }
     case 'LOGOUT':
       return {}
+    case 'REGISTER':
+      return {
+        uid: action.uid
+      }
+      
     default:
       return state
   }
